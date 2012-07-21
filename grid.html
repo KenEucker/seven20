@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="seven20 - a mongo-trapi interface">
+    <meta name="author" content="epic720">
+
+    <script src="http://code.jquery.com/jquery.min.js"></script>
+    <script src="./scripts/bootstrap.js"></script>
+    <script src="./scripts/jquery.seven20.js"></script>
+    <script src="./scripts/jquery.seven20.grid.js"></script>
+    <script src="./scripts/jquery.seven20.editor.js"></script>
+    <script src="./scripts/bootstrap.helper.js"></script>
+
+
+    <script>
+        var grid_item_html = '<div class="grid-item grid-item-bar">' +
+                '<div class="left-padding">' +
+                '</div>' +
+                '<div class="checkbox">' +
+                '    <input type="checkbox" class="checkbox" /></div>' +
+                '<div class="grid-item-content-area">' +
+                '<div class="grid-item-left-tag-area">' +
+                '    <div class="id-tag">' +
+                '        ##0##</div>' +
+                '</div>' +
+                '<div class="grid-item-title-area">' +
+                '    ##2##</div>' +
+                '<div class="grid-item-date-area">' +
+                '    ##1##</div>' +
+                '</div></div>';
+
+        $().ready(function(){
+            bootstrapNav('#nav', 'Seven20');
+            //getData('/m/sp_getContentTypeHeader', '', populateNav, false, '', $('li.nav-header:contains(data)'), "Manage/d");
+            //getData('/m/usp_sd_getViewHeader', '', populateNav, false, '', $('li.nav-header:contains(view)'), "Manage/v");
+            //getData('/m/sp_getStoredProcedureHeader', '', populateNav, false, '', $('li.nav-header:contains(method)'), "Manage/m");
+
+            //initNav($('#nav'), 'div.nav-category', 'h3');
+
+            var contentName = "/d/a";
+
+            if (contentName.length !== 0) {
+                // Show loading animation
+                //showLoadingAnimation($('#grid-inner-container .grid-items-list'));
+                initGrid(contentName);
+            }
+            else {
+                $('#dataGrid').epicGrid({ contentType: contentName });
+            }
+            $("#filterText").keyup(function (event) {
+                if (event.keyCode == 13) {
+                    $("div.filter-button").click();
+                }
+            });
+        });
+
+        function initGrid(contentName) {
+            $('#dataGrid').epicGrid({
+                contentType: contentName
+            });
+        }
+    </script>
+
+
+    <link href="./css/jquery.pnotify.default.css" rel="stylesheet" type="text/css" />
+    <link href="./css/jquery.pnotify.default.icons.css" rel="stylesheet" type="text/css" />
+    <link href="./css/jquery.seven20.css" rel="stylesheet" type="text/css" />
+    <link href="./css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        body {
+            padding-top: 60px;
+            padding-bottom: 40px;
+        }
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+    </style>
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="../assets/ico/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
+</head>
+
+<body>
+
+<div id="nav">
+</div>
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div id="dataGrid">
+            <div id="gridUI" class="grid-height row-fluid">
+            </div>
+        </div>
+    </div><!--/row-->
+
+    <hr>
+
+    <footer>
+        <p>&copy; Seven20 2012</p>
+    </footer>
+
+</div><!--/.fluid-container-->
+
+</body>
+</html>
+
+
