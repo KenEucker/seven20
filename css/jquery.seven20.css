@@ -19,7 +19,8 @@
 }
 
 .grid-width {
-    width: 48em;
+    min-width: 48em;
+    max-width: 80em;
 }
 
 #gridUI {
@@ -173,8 +174,7 @@
 
 #viewer {
     position: relative;
-    /*width: 12em;
-    float: left;*/
+    min-width: 20em;
     margin-top: 37px;
     outline: none;
     overflow: auto;

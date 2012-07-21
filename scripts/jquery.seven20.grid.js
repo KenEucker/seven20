@@ -1,5 +1,5 @@
 (function ($) {
-    $.fn.epicGrid = function (options) {
+    $.fn.seven20Grid = function (options) {
         var defaultOptions =
         {
             "contentType": '',
@@ -10,7 +10,7 @@
             'innerContainerSelector': '#grid-inner-container .grid-items-list',
             'gridItemSelector': '.grid-items-list',
             'messageSelector': '.yellow-message',
-            'buildViewer': false,
+            'buildViewer': true,
             'timer': '',
             'filter': '',
             'downKey': 40,
@@ -18,22 +18,16 @@
             'selectKey': 32,
             'deleteKey': 46,
             'completeKey': 35,
-            'deleteFunction': null,
-            'editFunction': null,
-            'archiveFuntion': null,
-            'pinFunction': null,
-            'loadDataFunction': null,
             'editButtons': null,
-            'scrollbarSelector1': $('#nav'),
-            'scrollbarSelector2': 'div.nav-category',
-            'scrollbarSelector3': 'h3',
             'globalButtonNames': ["refresh", "add"],
             'globalButtonIcons': ["refresh", "plus"],
             'editButtonNames': ["pin", "share", "edit", "archive", "delete"],
             'editButtonIcons': ["heart", "share", "edit", "inbox", "trash"],
-            'viewerTemplate': '<div id="viewer" class="well grid-height"><div id="view-items-list" class=""></div></div>',
+            'viewerTemplate': '<div id="viewer" class="well grid-height"><i class="icon-chevron-left slide-left-button"></i></div><div id="view-items-list" class=""></div></div>',
             'gridTemplate': '<div id="grid" class="well grid-width"><div id="grid-inner-container" class="grid-width"><div class="grid-control-bar grid-width"><div class="grid-control-buttons" grid-width><div class="left-padding"></div><label class="checkbox"><input type="checkbox" class="selectall"></label><div class="input-append" style="display: inline-block;"><input type="text" rows="30" id="filterText" class="input-medium"><a class="btn filter-button" href="#" data-original-title="Filter"><i class="icon-filter"></i></a></div><div class="global-buttons"></div><div class="edit-buttons"></div></div></div><div class="error-message"></div><div class="grid-items-list grid-height grid-width"><div class="no-data">No Data To Show</div></div></div></div>',
             'barButtonHtml': '<a class="btn ##name##-button" href="#" data-original-title="##tip##"><i class="icon-##icon##"></i></a>',
+            'grid_item_html': '<div class="grid-item grid-item-bar"><div class="left-padding"></div><div class="checkbox"><input type="checkbox" class="checkbox" /></div><div class="grid-item-content-area" ##data##>##item-html##</div>',
+            'grid_item_data_html': '<div class="grid-item-left-tag-area"><div class="id-tag">##tag##</div></div><div class="grid-item-title-area">##text##</div><div class="grid-item-date-area">##_id##</div>',
             'viewTemplate1': '<div class="view-row"><div class="view-name">',
             'viewTemplate2': '</div><div class="view-value">',
             'viewTemplate3': '</div></div>',
@@ -48,7 +42,7 @@
                 buildGrid();
                 if(o.buildViewer)
                     buildViewer();
-                callLoadData();
+                LoadData();
 
                 var editButtonSelector = configureButtons();
                 o.editButtons = $t.find(editButtonSelector);
@@ -74,20 +68,22 @@
                 $(o.innerContainerSelector).html('');
 
                 $.each(data, function (i, item) {
-                    var item_html = grid_item_html;
+                    var item_html = o.grid_item_data_html;
+                    var data_html = '';
+                    var complete_html = o.grid_item_html;
+
                     var count = 0;
                     for (var key in item) {
-                        item_html = item_html.replace('##' + count++ + '##', item[key]);
+                        item_html = item_html.replace('##' + key + '##', item[key]);
+                        data_html += ' data-' + key + '="' + item[key] + '"';
                     }
-                    $(o.innerContainerSelector).append(item_html);
+
+                    complete_html = complete_html.replace('##item-html##',item_html).replace('##data##', data_html);
+                    $(o.innerContainerSelector).append(complete_html);
                 });
             }
 
-            function callLoadData() {
-                getData(o.contentType, insertData, o.dataParams, o.dataUrl);
-            }
-
-            function callRefresh() {
+            function LoadData() {
                 getData(o.contentType, insertData, o.dataParams, o.dataUrl);
             }
 
@@ -131,12 +127,6 @@
 //                }
 //            }
 
-            function refreshData() {
-                // Show loading animation
-                showLoadingAnimation($('#grid-inner-container .grid-items-list'));
-                getData('/h/' + contentname, '', insertData, false, '', $('#grid-inner-container .grid-items-list'), true);
-            }
-
             function addCreatorItem() {
                 var newDivId = "new" + contentname + $('#editor').find('div.add-div').length;
                 $('#viewer').append('<div class="add-div"></div>');
@@ -145,32 +135,30 @@
                 });
             }
 
-            function editItems() {
-                var selectedItems = $('.checked-grid-item-bar');
+            function editItems(selectedItems) {
                 $.each(selectedItems, function (i, item) {
-                    var itemID = $(item).find('.id-tag').html().trim();
-                    addEditorItem(itemID);
+                    var itemID = $(item).find('._id').html().trim();
+                    //addEditorItem(itemID);
                 });
             }
 
-            function deleteItems() {
-                var selectedItems = $('.checked-grid-item-bar');
+            function deleteItems(selectedItems) {
                 $.each(selectedItems, function (i, item) {
-                    var itemID = $(item).find('.id-tag').html().trim();
-                    getData('/m/sp_deleteContentById', 'id=' + itemID, function () { }, false);
+                    var itemID = $(item).find('_id').html().trim();
+
                 });
             }
 
-            function addEditorItem(id) {
-                var newDivId = "edit" + contentname + id;
-                if ($('#' + newDivId).length != 0)
-                    return;
-                $('#viewer').append('<div class="edit-div ' + newDivId + '"></div>');
-                $('#viewer div.edit-div.' + newDivId).load("/Edit/d/" + contentname + "/" + id + "/?embedded=true&loadscripts=false&target=" + newDivId);
-                //$.get("/Edit/" + contentname + "/" + id + "/?embedded=true&loadscripts=false&target=" + newDivId, function (html) {
-                //    $('div.edit-div.' + newDivId).html(html);
-                //});
-            }
+//            function addEditorItem(id) {
+//                var newDivId = "edit" + contentname + id;
+//                if ($('#' + newDivId).length != 0)
+//                    return;
+//                $('#viewer').append('<div class="edit-div ' + newDivId + '"></div>');
+//                $('#viewer div.edit-div.' + newDivId).load("/Edit/d/" + contentname + "/" + id + "/?embedded=true&loadscripts=false&target=" + newDivId);
+//                //$.get("/Edit/" + contentname + "/" + id + "/?embedded=true&loadscripts=false&target=" + newDivId, function (html) {
+//                //    $('div.edit-div.' + newDivId).html(html);
+//                //});
+//            }
 
             function configureCheckboxes() {
                 $t.find('.selectall').bind('click', function () {
@@ -239,41 +227,40 @@
             function configureButtonEvents() {
                 // Refresh the grid results
                 $t.find('.refresh-button').bind('click', function () {
-                    if (o.refreshFunction != null)
-                        o.refreshFunction();
+                    LoadData();
+                });
 
-                    callRefresh();
+                $("#filterText").keyup(function (event) {
+                    if (event.keyCode == 13) {
+                        $("div.filter-button").click();
+                    }
                 });
 
                 // Add an item
                 $t.find('.add-button').bind('click', function () {
-                    if (o.addFunction != null)
-                        o.addFunction();
+                    addCreatorItem();
                 });
 
                 // Edit the selected items
                 $t.find('.edit-button').bind('click', function () {
-                    if (o.editFunction != null)
-                        o.editFunction();
-
                     var selectedItems = $(o.gridItemSelector).find(":checked");
+
+                    editItems(selectedItems);
+
                     removeItems(selectedItems);
                     disableGridButtons();
                 });
 
                 // Delete the selected items
                 $t.find('.delete-button').bind('click', function () {
-                    if (o.deleteFunction != null)
-                        o.deleteFunction();
-
+                    deleteItems();
                     clearCheckedItems(' items moved to trash', false);
                     disableGridButtons();
                 });
 
                 // Complete the selected item
                 $t.find('.archive-button').bind('click', function () {
-                    if (o.archiveFunction != null)
-                        o.archiveFunction();
+                    //TODO: wireup archiving
 
                     clearCheckedItems(' items archived', true);
                     disableGridButtons();
@@ -311,13 +298,17 @@
                     $(o.gridItemSelector).find('.selected-grid-item-bar').removeClass('selected-grid-item-bar');
                     $(this).addClass('selected-grid-item-bar');
 
-                    var getDataMethod = '/d/' + o.contentType + '/' + $(this).find('.id-tag').html();
-                    var getDataMethodParams = '';
-                    if (o.contentType == "dynamic") {
-                        getDataMethod = '/m/sp_getContentById';
-                        getDataMethodParams = 'id=' + $(this).find('.id-tag').html();
+                    if(o.buildViewer === true)
+                    {
+                        var getDataMethod = o.contentType + '/';
+                        if (o.contentType == "dynamic") {
+                            getDataMethod = '/';
+                        }
+
+                        getDataMethod += $(this).data('_id');
+
+                        getData(getDataMethod, showDataInViewer);
                     }
-                    getData(getDataMethod, getDataMethodParams, showDataInViewer, false, '', $(this), "");
                 });
             }
 
@@ -343,14 +334,18 @@
                 results.show();
             }
 
+            function getSelectedItems() {
+                return $(o.gridItemSelector).find(":checked");
+            }
+
             function clearCheckedItems(message, fade) {
-                var selectedItems = $(o.gridItemSelector).find(":checked");
+                var selectedItems = getSelectedItems();
 
                 // Prevent the arrow from being prepended if nothing's checked
                 if (selectedItems.length === 0) {
                     // Alert the user that nothing's checked with a yellow alert message
                     ShowMessage('N/A', 'No items selected');
-                    return false;
+                    return;// false;
                 }
 
                 // Alert the user what's been removed
