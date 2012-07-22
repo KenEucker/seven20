@@ -1,5 +1,5 @@
 (function ($) {
-    $.fn.epicGrid = function (options) {
+    $.fn.seven20Navigator = function (options) {
         var defaultOptions =
         {
             'navSelector': $('#nav'),
@@ -7,7 +7,7 @@
             'navHeaderSelector': '.nav-header',
             'navEntryNames': ["data", "view", "method"],
             'navEntryTemplate': '<li class="nav-header">##name##</li>',
-            'navTemplate': '<ul id="nav" class="well nav nav-list grid-height">##nav-entries##</ul>'
+            'navTemplate': '<ul id="nav" class="well nav nav-list grid-height"><div class="slide-right-button"><i class="icon-chevron-left"></i></div>##nav-entries##</ul>'
         };
         var o = $.extend(defaultOptions, options);
 
@@ -44,6 +44,9 @@
                 }
                 navHtml = navHtml.replace(/##nav-entries##/g, navEntriesHtml);
                 $(o.navSelector).append(navHtml);
+                $t.find('.slide-right-button').bind('click', function () {
+                    slideRight($(this).parent());
+                });
             }
 
             init();

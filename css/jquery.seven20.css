@@ -210,7 +210,8 @@
     vertical-align:middle;
 }
 .slide-left-button:hover,.slide-right-button:hover{
-    background-color:gray;
+    background-color:#E5E5E5;
+    cursor: pointer;
 }
 .slide-right-button {
     position: absolute;

@@ -13,6 +13,7 @@
     <script src="./scripts/jquery.seven20.js"></script>
     <script src="./scripts/jquery.seven20.grid.js"></script>
     <script src="./scripts/jquery.seven20.editor.js"></script>
+    <script src="./scripts/jquery.seven20.navigator.js"></script>
     <script src="./scripts/bootstrap.helper.js"></script>
 
 
@@ -26,6 +27,8 @@
             //initNav($('#nav'), 'div.nav-category', 'h3');
 
             var contentName = "/d/a";
+
+            $('#dataGrid').seven20Navigator({navSelector:'#sidebar'});
 
             if (contentName.length !== 0) {
                 // Show loading animation
@@ -50,8 +53,8 @@
             padding-top: 60px;
             padding-bottom: 40px;
         }
-        .sidebar-nav {
-            padding: 9px 0;
+        #sidebar {
+            min-width: 12em;
         }
 
         .ui-pnotify-history-container {
@@ -81,6 +84,7 @@
     <div class="row-fluid">
         <div id="dataGrid">
             <div id="gridUI" class="grid-height row-fluid">
+                <div id="sidebar"></div>
             </div>
         </div>
     </div><!--/row-->

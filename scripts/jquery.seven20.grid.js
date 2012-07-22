@@ -146,8 +146,8 @@
 
             function deleteItems(selectedItems) {
                 $.each(selectedItems, function (i, item) {
-                    var itemID = $(item).find('_id').html().trim();
-
+                    var itemID = $(item).parent().siblings('.grid-item-content-area').data()._id;
+                    deleteData(o.contentType + '/' + itemID, function(result){ShowMessage('Deleted record at _id=' + itemID,'Delete Successful');});
                 });
             }
 
@@ -161,6 +161,12 @@
 //                //    $('div.edit-div.' + newDivId).html(html);
 //                //});
 //            }
+
+            function getSelectedItems()
+            {
+                var selectedItems = $(o.gridItemSelector).find(":checked");
+                return selectedItems;
+            }
 
             function configureCheckboxes() {
                 $t.find('.selectall').bind('click', function () {
@@ -245,8 +251,8 @@
 
                 // Edit the selected items
                 $t.find('.edit-button').bind('click', function () {
-                    var selectedItems = $(o.gridItemSelector).find(":checked");
 
+                    var selectedItems = getSelectedItems();
                     editItems(selectedItems);
 
                     removeItems(selectedItems);
@@ -255,7 +261,7 @@
 
                 // Delete the selected items
                 $t.find('.delete-button').bind('click', function () {
-                    deleteItems();
+                    deleteItems(getSelectedItems());
                     clearCheckedItems(' items moved to trash', false);
                     disableGridButtons();
                 });
