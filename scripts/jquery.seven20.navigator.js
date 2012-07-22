@@ -6,7 +6,6 @@
             'navEntrySelector': 'ul.nav-list li',
             'navHeaderSelector': '.nav-header',
             'navEntryNames': ["data", "view", "method"],
-            'viewerTemplate': '<div id="viewer" class="well grid-height"><div id="view-items-list" class=""></div></div>',
             'navEntryTemplate': '<li class="nav-header">##name##</li>',
             'navTemplate': '<ul id="nav" class="well nav nav-list grid-height">##nav-entries##</ul>'
         };

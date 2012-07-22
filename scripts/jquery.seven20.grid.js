@@ -23,7 +23,7 @@
             'globalButtonIcons': ["refresh", "plus"],
             'editButtonNames': ["pin", "share", "edit", "archive", "delete"],
             'editButtonIcons': ["heart", "share", "edit", "inbox", "trash"],
-            'viewerTemplate': '<div id="viewer" class="well grid-height"><i class="icon-chevron-left slide-left-button"></i></div><div id="view-items-list" class=""></div></div>',
+            'viewerTemplate': '<div id="viewer" class="well grid-height"><div class="slide-left-button"><i class="icon-chevron-right"></i></div><div id="view-items-list" class=""></div></div>',
             'gridTemplate': '<div id="grid" class="well grid-width"><div id="grid-inner-container" class="grid-width"><div class="grid-control-bar grid-width"><div class="grid-control-buttons" grid-width><div class="left-padding"></div><label class="checkbox"><input type="checkbox" class="selectall"></label><div class="input-append" style="display: inline-block;"><input type="text" rows="30" id="filterText" class="input-medium"><a class="btn filter-button" href="#" data-original-title="Filter"><i class="icon-filter"></i></a></div><div class="global-buttons"></div><div class="edit-buttons"></div></div></div><div class="error-message"></div><div class="grid-items-list grid-height grid-width"><div class="no-data">No Data To Show</div></div></div></div>',
             'barButtonHtml': '<a class="btn ##name##-button" href="#" data-original-title="##tip##"><i class="icon-##icon##"></i></a>',
             'grid_item_html': '<div class="grid-item grid-item-bar"><div class="left-padding"></div><div class="checkbox"><input type="checkbox" class="checkbox" /></div><div class="grid-item-content-area" ##data##>##item-html##</div>',
@@ -89,6 +89,9 @@
 
             function buildViewer() {
                 $(o.gridSelector).append(o.viewerTemplate);
+                $t.find('.slide-left-button').bind('click', function () {
+                    slideLeft($(this).parent());
+                });
             }
 
             function buildGrid() {

@@ -198,7 +198,26 @@
     overflow: auto;
 }
 
+.slide-left-button {
+    position: absolute;
+    margin-left: -15px;
+    height: 90%;
+    line-height:12em;
+}
 
+.slide-left-button i
+{
+    vertical-align:middle;
+}
+.slide-left-button:hover,.slide-right-button:hover{
+    background-color:gray;
+}
+.slide-right-button {
+    position: absolute;
+    right: 15px;
+    height: 90%;
+    line-height:12em;
+}
 
 
 .no-data {
