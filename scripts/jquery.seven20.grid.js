@@ -9,7 +9,6 @@
             'outerContainerSelector': '#grid-inner-container',
             'innerContainerSelector': '#grid-inner-container .grid-items-list',
             'gridItemSelector': '.grid-items-list',
-            'messageSelector': '.yellow-message',
             'buildViewer': true,
             'timer': '',
             'filter': '',
