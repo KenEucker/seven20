@@ -51,9 +51,7 @@
 
             function validateForm(form) {
                 var data = $(form).serializeFormJSON();
-                setData(o.contentId, closeForm, form.data());
-
-                //return false;
+                setData(o. contentName + '/' + o.contentId, closeForm, data);
             }
 
             function closeForm(result)

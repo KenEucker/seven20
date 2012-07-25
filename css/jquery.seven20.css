@@ -29,6 +29,7 @@
     outline: none;
 	min-height: 40em;
     min-width: 42em;
+    margin-left:0;
 }
 
 #grid-inner-container {
@@ -145,6 +146,7 @@
     outline: none;
     overflow: auto;
     margin-top: 37px;
+    margin-left: 0;
 }
 
 #sidebar {

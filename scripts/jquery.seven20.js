@@ -20,7 +20,12 @@ function makeAjax(request, callback, type, data, host, port)
     if (port === '' || port === undefined)
         port = 8080;
     if (host === '' || host === undefined)
-        host = "http://localhost";
+    {
+        if( window.location.host === '')
+                host = "http://localhost";
+        else
+            host = 'http://' + window.location.host;
+    }
 
     $.ajax({
         url:host + ':' + port + request,
