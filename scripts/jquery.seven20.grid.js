@@ -22,8 +22,8 @@
             'globalButtonIcons': ["refresh", "plus"],
             'editButtonNames': ["pin", "share", "edit", "archive", "delete"],
             'editButtonIcons': ["heart", "share", "edit", "inbox", "trash"],
-            'viewerTemplate': '<div id="viewer" class="well grid-height"><div class="slide-left-button"><i class="icon-chevron-right"></i></div><div id="view-items-list" class=""></div></div>',
-            'gridTemplate': '<div id="grid" class="well grid-width"><div id="grid-inner-container" class="grid-width"><div class="grid-control-bar grid-width"><div class="grid-control-buttons" grid-width><div class="left-padding"></div><label class="checkbox"><input type="checkbox" class="selectall"></label><div class="input-append" style="display: inline-block;"><input type="text" rows="30" id="filterText" class="input-medium"><a class="btn filter-button" href="#" data-original-title="Filter"><i class="icon-filter"></i></a></div><div class="global-buttons"></div><div class="edit-buttons"></div></div></div><div class="error-message"></div><table class="grid-items-list grid-height grid-width"></table></div></div>',
+            'viewerTemplate': '<div id="viewer" class="well grid-height span4"><div class="slide-left-button"><i class="icon-chevron-right"></i></div><div id="view-items-list" class=""></div></div>',
+            'gridTemplate': '<div id="grid" class="well grid-width span6"><div id="grid-inner-container" class="grid-width"><div class="grid-control-bar grid-width"><div class="control-group grid-width"><div class="left-padding"></div><div class="input-prepend input-append" style="display: inline-block;"><input type="checkbox" class="selectall"><input type="text" rows="30" id="filterText" class="input-medium"><a class="btn filter-button" href="#" data-original-title="Filter"><i class="icon-filter"></i></a></div><div class="global-buttons"></div><div class="edit-buttons"></div></div></div><div class="error-message"></div><table class="grid-items-list grid-height grid-width"></table></div></div>',
             'barButtonHtml': '<a class="btn ##name##-button" href="#" data-original-title="##tip##"><i class="icon-##icon##"></i></a>',
             'grid_item_html': '<tr class="grid-item grid-item-bar" ##data##><td class="left-padding"></td><td class="checkbox"><input type="checkbox" class="checkbox" /></td><td class="grid-item-content-area">##item-html##</td></tr>',
             'grid_item_data_html': '<td class="grid-item-left-tag-area"><td class="id-tag">##tag##</td></td><td class="grid-item-title-area">##text##</td><td class="grid-item-date-area">##_id##</td>',
@@ -89,7 +89,7 @@
             function buildViewer() {
                 $(o.gridSelector).append(o.viewerTemplate);
                 $t.find('.slide-left-button').bind('click', function () {
-                    slideLeft($(this).parent());
+                    $(this).parent().slideLeft();
                 });
             }
 

@@ -56,6 +56,7 @@
         }
         #sidebar {
             min-width: 12em;
+            max-width: 20em;
         }
 
         .ui-pnotify-history-container {
@@ -66,6 +67,12 @@
         }
         .form-horizontal .control-label {
             width: 100px;
+        }
+        .form-actions {
+            overflow: hidden;
+        }
+        .tabbable {
+            position: relative;
         }
     </style>
 
@@ -91,12 +98,10 @@
     <div class="row-fluid">
         <div id="dataGrid">
             <div id="gridUI" class="grid-height row-fluid">
-                <div id="sidebar"></div>
+                <div id="sidebar" class="span3"></div>
             </div>
         </div>
     </div><!--/row-->
-
-    <hr>
 
     <footer>
         <p>&copy; Seven20 2012</p>

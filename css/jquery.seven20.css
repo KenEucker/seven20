@@ -6,12 +6,8 @@
     display:inline-block;
 }
 .selectall {
-    position: relative;
-    float: left;
-    width: auto;
-    height: auto;
-    margin: 3px;
-    margin-top: 9px;
+    margin-left: 8px !important;
+    margin-right: 8px !important;
 }
 
 .grid-height {
@@ -19,8 +15,9 @@
 }
 
 .grid-width {
-    min-width: 48em;
-    max-width: 80em;	
+    /*min-width: 48em;
+    max-width: 80em;*/
+    width: 100%;
 }
 
 #gridUI {
@@ -29,7 +26,6 @@
 
 #grid {
     position: relative;
-    float: left;
     outline: none;
 	min-height: 40em;
 }
@@ -148,20 +144,15 @@
 #viewer {
     position: relative;
     min-width: 20em;
-    margin-top: 37px;
     outline: none;
     overflow: auto;
+    margin-top: 37px;
 }
 
-#nav {
-    position: relative;
-    float: left;
-    width: 150px;
-    margin-left: 15px;
-    margin-top: 37px;
-    outline: none;
+#sidebar {
     overflow-y: auto;
     overflow-x: hidden;
+    margin-top: 37px;
 }
 
 

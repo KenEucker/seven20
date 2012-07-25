@@ -5,20 +5,16 @@
             'navSelector': $('#nav'),
             'navEntrySelector': 'ul.nav-list li',
             'navHeaderSelector': '.nav-header',
-            'navEntryNames': ["data", "view", "method"],
-            'navEntryTemplate': '<li class="nav-header">##name##</li>',
-            'navTemplate': '<ul id="nav" class="well nav nav-list grid-height"><div class="slide-right-button"><i class="icon-chevron-left"></i></div>##nav-entries##</ul>'
+            'navEntryNames': ["collections", "public", "new"],
+            'navEntryTemplate': '<li class="nav-header" data-toggle="tab">##name##</li>',
+            'navTabPaneTemplate': '<div class="tab-pane ##class##" id="##tab##"><p>##content##</p></div>',
+            'navTemplate': '<div class="slide-right-button"><i class="icon-chevron-left"></i></div><ul class="nav nav-tabs">##tabs##</ul><div class="tab-content">##tabs-content##</div>',
+            'navTabHeaderTemplate':'<li class="##class##"><a href="##tab##">##name##</a></li>'
         };
         var o = $.extend(defaultOptions, options);
 
         return this.each(function () {
             var $t = $(this);
-
-            function initNav(selector, group, header) {
-                selector.find(header).click(function () {
-                    $(this).next(group).slideToggle();
-                });
-            }
 
             function populateNav(data, selector, action) {
                 // Show loading animation
@@ -36,16 +32,23 @@
             function init() {
 
                 var navHtml = o.navTemplate;
-                var navEntriesHtml = "";
+                var navHeaderHtml = "";
+                var navContentHtml = "";
                 for (var i in o.navEntryNames) {
-                    var navEntryHtml = o.navEntryTemplate;
-                    navEntryHtml = navEntryHtml.replace(/##name##/g, o.navEntryNames[i]);
-                    navEntriesHtml += navEntryHtml;
+                    var css = '';
+                    if(i === "0")
+                        css = 'active';
+
+                    var navTabHtml = o.navTabHeaderTemplate;
+                    navTabHtml = navTabHtml.replace(/##name##/g, o.navEntryNames[i]).replace(/##class##/g, css).replace(/##tab##/g,'#tab' + i);
+                    navHeaderHtml += navTabHtml;
+                    navContentHtml += o.navTabPaneTemplate.replace(/##class##/g, css).replace(/##tab##/g,'tab' + i);
                 }
-                navHtml = navHtml.replace(/##nav-entries##/g, navEntriesHtml);
+                navHtml = navHtml.replace(/##tabs##/g, navHeaderHtml).replace(/##tabs-content##/g, navContentHtml);
                 $(o.navSelector).append(navHtml);
+                $(o.navSelector).addClass('tabbable well grid-height');
                 $t.find('.slide-right-button').bind('click', function () {
-                    slideRight($(this).parent());
+                    $(this).parent().slideRight();
                 });
             }
 
