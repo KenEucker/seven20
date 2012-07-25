@@ -1,4 +1,6 @@
 var connect = require('connect');
-connect.createServer(
-    connect.static(__dirname)
-).listen(80);
+var server = connect.createServer();
+server = connect.createServer(connect.static(__dirname));
+server.listen(80,function(){
+    console.log('%s listening at %s', server.name, server.url);
+});
