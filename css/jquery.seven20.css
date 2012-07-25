@@ -20,7 +20,7 @@
 
 .grid-width {
     min-width: 48em;
-    max-width: 80em;
+    max-width: 80em;	
 }
 
 #gridUI {
@@ -31,14 +31,8 @@
     position: relative;
     float: left;
     outline: none;
+	min-height: 40em;
 }
-
-/*#grid-container {
-    position: relative;
-    float: left;
-    height: auto;
-    background: (linear, left bottom, left top, color-stop(0, #F7F9FC), color-stop(1, white));
-}*/
 
 #grid-inner-container {
     margin: 0px 0 6px 6px;
@@ -51,8 +45,6 @@
 }
 
 .grid-item-content-area {
-    width: 100%;
-    height: 100%;
 }
 
 .yellow-message {
@@ -71,8 +63,6 @@
 }
 
 .grid-item-bar {
-    float: left;
-    width: 100%;
     height: 2.5em;
     background: #e5e5e5;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
@@ -103,39 +93,22 @@
 }
 
 .left-padding {
-    float: left;
-    height: 15px;
     width: 7px;
-    margin: 5px 3px 3px 3px;
     background: transparent 0 0 no-repeat;
 }
 
 .checkbox {
-    float: left;
     height: auto;
     width: auto;
     margin: 3px;
 }
 
 .grid-item-left-tag-area {
-    float: left;
-    height: 14px;
-    width: 160px;
-    margin: 4px 3px 3px 5px;
-    font-size: 10px;
-    overflow: hidden;
-    position: relative;
 }
 
 .grid-item-title-area {
-    float: left;
-    height: 15px;
-    width: 300px;
-    margin: 5px 3px 3px 5px;
-    font-size: 14px;
     font-weight: normal;
     overflow: hidden;
-    color: #222;
 }
 
 .grid-item-right-area {

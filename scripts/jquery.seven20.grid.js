@@ -23,10 +23,10 @@
             'editButtonNames': ["pin", "share", "edit", "archive", "delete"],
             'editButtonIcons': ["heart", "share", "edit", "inbox", "trash"],
             'viewerTemplate': '<div id="viewer" class="well grid-height"><div class="slide-left-button"><i class="icon-chevron-right"></i></div><div id="view-items-list" class=""></div></div>',
-            'gridTemplate': '<div id="grid" class="well grid-width"><div id="grid-inner-container" class="grid-width"><div class="grid-control-bar grid-width"><div class="grid-control-buttons" grid-width><div class="left-padding"></div><label class="checkbox"><input type="checkbox" class="selectall"></label><div class="input-append" style="display: inline-block;"><input type="text" rows="30" id="filterText" class="input-medium"><a class="btn filter-button" href="#" data-original-title="Filter"><i class="icon-filter"></i></a></div><div class="global-buttons"></div><div class="edit-buttons"></div></div></div><div class="error-message"></div><div class="grid-items-list grid-height grid-width"><div class="no-data">No Data To Show</div></div></div></div>',
+            'gridTemplate': '<div id="grid" class="well grid-width"><div id="grid-inner-container" class="grid-width"><div class="grid-control-bar grid-width"><div class="grid-control-buttons" grid-width><div class="left-padding"></div><label class="checkbox"><input type="checkbox" class="selectall"></label><div class="input-append" style="display: inline-block;"><input type="text" rows="30" id="filterText" class="input-medium"><a class="btn filter-button" href="#" data-original-title="Filter"><i class="icon-filter"></i></a></div><div class="global-buttons"></div><div class="edit-buttons"></div></div></div><div class="error-message"></div><table class="grid-items-list grid-height grid-width"></table></div></div>',
             'barButtonHtml': '<a class="btn ##name##-button" href="#" data-original-title="##tip##"><i class="icon-##icon##"></i></a>',
-            'grid_item_html': '<div class="grid-item grid-item-bar"><div class="left-padding"></div><div class="checkbox"><input type="checkbox" class="checkbox" /></div><div class="grid-item-content-area" ##data##>##item-html##</div>',
-            'grid_item_data_html': '<div class="grid-item-left-tag-area"><div class="id-tag">##tag##</div></div><div class="grid-item-title-area">##text##</div><div class="grid-item-date-area">##_id##</div>',
+            'grid_item_html': '<tr class="grid-item grid-item-bar" ##data##><td class="left-padding"></td><td class="checkbox"><input type="checkbox" class="checkbox" /></td><td class="grid-item-content-area">##item-html##</td></tr>',
+            'grid_item_data_html': '<td class="grid-item-left-tag-area"><td class="id-tag">##tag##</td></td><td class="grid-item-title-area">##text##</td><td class="grid-item-date-area">##_id##</td>',
             'viewTemplate1': '<div class="view-row"><div class="view-name">',
             'viewTemplate2': '</div><div class="view-value">',
             'viewTemplate3': '</div></div>',
@@ -97,38 +97,6 @@
                 $(o.gridSelector).append(o.gridTemplate);
             }
 
-//            function displayItem(item)
-//            {
-//                $("#viewer").append('<p>');
-//                $.each(item, function(k, v) {
-//                    if(k === '_id')
-//                    {
-//                        $("#viewer").append('<h4>_id: ' + v + '</h4>');
-//                    }
-//                    else
-//                    {
-//                        $("#viewer").append(k + ': ' + v + '</br>');
-//                    }
-//
-//                });
-//                $("#viewer").append('</p>');
-//            }
-//
-//            function showDataInViewer(data)
-//            {
-//                $("#viewer").html('');
-//                if($.isArray(data))
-//                {
-//                    $.each(data, function(i, item) {
-//                        displayItem(item);
-//                    });
-//                }
-//                else
-//                {
-//                    displayItem(data);
-//                }
-//            }
-
             function addCreatorItem() {
                 var newDivId = "new" + contentname + $('#editor').find('div.add-div').length;
                 $('#viewer').append('<div class="add-div"></div>');
@@ -139,28 +107,21 @@
 
             function editItems(selectedItems) {
                 $.each(selectedItems, function (i, item) {
-                    var itemID = $(item).find('._id').html().trim();
-                    //addEditorItem(itemID);
+                    var itemID = $(item).parent().parent().data()._id;
+                    addEditorItem(itemID, $(item).parent().parent().data());
                 });
             }
 
             function deleteItems(selectedItems) {
                 $.each(selectedItems, function (i, item) {
-                    var itemID = $(item).parent().siblings('.grid-item-content-area').data()._id;
+                    var itemID = $(item).parent().parent().data()._id;
                     deleteData(o.contentType + '/' + itemID, function(result){ShowMessage('Deleted record at _id=' + itemID,'Delete Successful');});
                 });
             }
 
-//            function addEditorItem(id) {
-//                var newDivId = "edit" + contentname + id;
-//                if ($('#' + newDivId).length != 0)
-//                    return;
-//                $('#viewer').append('<div class="edit-div ' + newDivId + '"></div>');
-//                $('#viewer div.edit-div.' + newDivId).load("/Edit/d/" + contentname + "/" + id + "/?embedded=true&loadscripts=false&target=" + newDivId);
-//                //$.get("/Edit/" + contentname + "/" + id + "/?embedded=true&loadscripts=false&target=" + newDivId, function (html) {
-//                //    $('div.edit-div.' + newDivId).html(html);
-//                //});
-//            }
+            function addEditorItem(id, data) {
+				$('#viewer').seven20Editor({contentId:id, data:data, target:'#viewer'});
+			}
 
             function getSelectedItems()
             {
@@ -299,7 +260,7 @@
 
             function configureGridItemClick() {
                 // Add click event to the grid item content area for viewing the item
-                $(o.gridItemSelector).delegate('.grid-item-content-area', 'click', function () {
+                $(o.gridItemSelector).delegate('.grid-item.grid-item-bar', 'click', function () {
                     // Show loading animation
                     $('#view-items-list').empty();
 
@@ -369,7 +330,7 @@
                 else {
                     removeList.parents('.grid-item').remove();
                 }
-                if (message.length != 0)
+                if (message !== undefined)
                     ShowMessage(message, 'Success');
             }
 

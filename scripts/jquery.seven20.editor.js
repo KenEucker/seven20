@@ -1,34 +1,40 @@
 (function ($) {
-    $.fn.epicEditor = function (options) {
+    $.fn.seven20Editor = function (options) {
         var defaultOptions =
         {
             'data': '',
-            'contentname': '',
-            'contentid': '',
-            'mode': '',
-            'storedProcMode': '',
+            "contentName": '',
+            "contentId": '',
+            'target': '',
             'targetForm': '',
-            'successSaveFun': '',
-            'formEntryHtml': '<tr><td class="name">##displayname##</td><td class="value"><input name="##inputname##" type="##type##" id="##inputname##" class="form-input ##class##" ##validation## ></td></tr>'
+			'formEntryHtml': '<div class="control-group"><label class="control-label" for="input-##inputname##">##displayname##</label><div class="controls"><input type="##type##" class="input-large" id="input-##inputname##" name="##inputname##" value="##value##"></div></div>',
+			'formHtml':'<div id="editor-##id##" class="editor-box"><h4>Edit address entry with id:##id##</h4><form id="form-##id##" class="form-horizontal" method="post" ><div class="form-actions"><button type="submit" class="btn btn-success" data-original-title="Save"><i class="icon-ok"></i></button><button onclick="javascript:fadeAndRemove(\'#editor-##id##\');" class="btn btn-danger" data-original-title="Cancel"><i class="icon-remove"></i></button></div></form></div>'
         };
         var o = $.extend(defaultOptions, options);
 
         return this.each(function () {
             var elem = $(this);
-
+			
             function init() {
-                $.each(o.data, function (i, item) {
-                    buildFormEntry(item.name, item.name, getValidationClassFromSqlColumn(item.nullable), getHtmlInputTypeFromSqlDatatype(item.type), getValidationHtmlFromSqlColumn(item.maxLength));
-                });
+                buildForm();
+            }
+			
+			function buildForm() {
+				var myForm = o.formHtml;
+				
+				myForm = myForm.replace(/##id##/g, o.contentId);
+				
+				$(o.target).append(myForm);
+				o.targetForm = '#form-' + o.contentId;
 
-                if (o.contentid !== "") {
-                    getData('/d/' + o.contentname + '/' + o.contentid, '', insertFormValues, false);
-                }
+                $.each(o.data, function(k, v) {
+                    buildFormEntry(k, v, '', 'text');
+                });
 
                 $(o.targetForm).validate({
-                    submitHandler: validateform
+                    submitHandler: validateForm
                 });
-            }
+			}
 
             function getSerializedFormWithIdValue(form, id) {
                 var serializedForm = $(form).serializeArray();
@@ -43,22 +49,16 @@
                 return serializedString.replace("&", "");
             }
 
-            function validateform(form) {
-                if (o.mode == "Edit") {
-                    getData('/m/usp_udt_' + o.contentname + o.storedProcMode, getSerializedFormWithIdValue(form, o.contentid), o.successSaveFun, false, '', o.targetForm);
-                }
-                else if (o.mode == "Create") {
+            function validateForm(form) {
+                var data = $(form).serializeFormJSON();
+                setData(o.contentId, closeForm, form.data());
 
+                //return false;
+            }
 
-                    getData('/m/sp_getNextContentIdentityFromName', 'content_name=' + o.contentname, function (data) {
-                        if (data.error) {
-                            return false;
-                        }
-                        getData('/m/usp_udt_' + o.contentname + o.storedProcMode, getSerializedFormWithIdValue(form, data[0].id), o.successSaveFun, false, '', o.targetForm);
-                    }, false);
-                }
-
-                return false;
+            function closeForm(result)
+            {
+                fadeAndRemove($(o.targetForm).parent());
             }
 
             function insertFormValues(data) {
@@ -91,18 +91,19 @@
                 return "";
             }
 
-            function buildFormEntry(displayName, entryName, entryClass, entryType, validationEntries) {
-                if (entryName == "id") {
+            function buildFormEntry(entryName, entryValue, entryClass, entryType, validationEntries) {
+                if (entryName == "_id") {
                     entryClass = entryClass.replace("required", "");
                     validationEntries += " readonly=readonly "
                 }
-                var newEntry = o.formEntryHtml.replace(/##displayname##/g, displayName);
+                var newEntry = o.formEntryHtml.replace(/##displayname##/g, entryName);
                 newEntry = newEntry.replace(/##class##/g, entryClass);
                 newEntry = newEntry.replace(/##inputname##/g, $.trim(entryName));
                 newEntry = newEntry.replace(/##type##/g, entryType);
+                newEntry = newEntry.replace(/##value##/g, entryValue);
                 newEntry = newEntry.replace(/##validation##/g, validationEntries);
 
-                $(newEntry).insertBefore($(o.targetForm).find('table tbody').children().last('tr'));
+                $(newEntry).insertBefore(o.targetForm + ' .form-actions');
             }
 
             init();
