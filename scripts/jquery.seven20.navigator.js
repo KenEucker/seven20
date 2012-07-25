@@ -6,10 +6,10 @@
             'navEntrySelector': 'ul.nav-list li',
             'navHeaderSelector': '.nav-header',
             'navEntryNames': ["collections", "public", "new"],
-            'navEntryTemplate': '<li class="nav-header" data-toggle="tab">##name##</li>',
+            'navEntryTemplate': '<li class="nav-header" >##name##</li>',
             'navTabPaneTemplate': '<div class="tab-pane ##class##" id="##tab##"><p>##content##</p></div>',
             'navTemplate': '<div class="slide-right-button"><i class="icon-chevron-left"></i></div><ul class="nav nav-tabs">##tabs##</ul><div class="tab-content">##tabs-content##</div>',
-            'navTabHeaderTemplate':'<li class="##class##"><a href="##tab##">##name##</a></li>'
+            'navTabHeaderTemplate':'<li class="##class##"><a href="##tab##" data-toggle="tab">##name##</a></li>'
         };
         var o = $.extend(defaultOptions, options);
 

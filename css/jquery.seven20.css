@@ -28,6 +28,7 @@
     position: relative;
     outline: none;
 	min-height: 40em;
+    min-width: 42em;
 }
 
 #grid-inner-container {
@@ -108,7 +109,6 @@
 }
 
 .grid-item-right-area {
-    float: left;
     height: 14px;
     width: 110px;
     margin: 4px 3px 3px 5px;
@@ -117,7 +117,6 @@
 }
 
 .grid-item-date-area {
-    float: left;
     height: 14px;
     width: 80px;
     margin: 7px 4px 3px 5px;
@@ -143,7 +142,6 @@
 
 #viewer {
     position: relative;
-    min-width: 20em;
     outline: none;
     overflow: auto;
     margin-top: 37px;
@@ -274,7 +272,7 @@ input[readonly=readonly] {
     background-color: #ddd;
 }
 ::-webkit-scrollbar {
-    width: 13px;
+    width: 10px;
     height: 13px;
 }
 

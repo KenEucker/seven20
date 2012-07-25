@@ -8,7 +8,7 @@
             'target': '',
             'targetForm': '',
 			'formEntryHtml': '<div class="control-group"><label class="control-label" for="input-##inputname##">##displayname##</label><div class="controls"><input type="##type##" class="input-large" id="input-##inputname##" name="##inputname##" value="##value##"></div></div>',
-			'formHtml':'<div id="editor-##id##" class="editor-box"><h4>Edit address entry with id:##id##</h4><form id="form-##id##" class="form-horizontal" method="post" ><div class="form-actions"><button type="submit" class="btn btn-success" data-original-title="Save"><i class="icon-ok"></i></button><button onclick="javascript:fadeAndRemove(\'#editor-##id##\'); return false;" class="btn btn-danger" data-original-title="Cancel"><i class="icon-remove"></i></button></div></form></div>'
+			'formHtml':'<hr><div id="editor-##id##" class="editor-box"><h4>Edit address entry with id:##id##</h4><form id="form-##id##" class="form-horizontal" method="post" ><div class="form-actions"><button type="submit" class="btn btn-success" data-original-title="Save"><i class="icon-ok"></i></button><button onclick="javascript:fadeAndRemove(\'#editor-##id##\'); return false;" class="btn btn-danger" data-original-title="Cancel"><i class="icon-remove"></i></button></div></form></div>'
         };
         var o = $.extend(defaultOptions, options);
 

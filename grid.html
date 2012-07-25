@@ -7,42 +7,7 @@
     <meta name="description" content="seven20 - a mongo-trapi interface">
     <meta name="author" content="epic720">
 
-    <script src="http://code.jquery.com/jquery.min.js"></script>
-    <script src="./scripts/bootstrap.js"></script>
-    <script src="./scripts/jquery.pnotify.min.js"></script>
-    <script src="./scripts/jquery.seven20.js"></script>
-    <script src="./scripts/jquery.seven20.editor.js"></script>
-    <script src="./scripts/jquery.seven20.navigator.js"></script>
-    <script src="./scripts/jquery.seven20.grid.js"></script>
-    <script src="./scripts/bootstrap.helper.js"></script>
-    <script src="./scripts/jquery.validate.min.js"></script>
 
-
-    <script>
-        $().ready(function(){
-            bootstrapNav('#topnav', 'Seven20');
-            //getData('/m/sp_getContentTypeHeader', '', populateNav, false, '', $('li.nav-header:contains(data)'), "Manage/d");
-            //getData('/m/usp_sd_getViewHeader', '', populateNav, false, '', $('li.nav-header:contains(view)'), "Manage/v");
-            //getData('/m/sp_getStoredProcedureHeader', '', populateNav, false, '', $('li.nav-header:contains(method)'), "Manage/m");
-
-            //initNav($('#nav'), 'div.nav-category', 'h3');
-
-            var contentName = "/d/a";
-
-            $('#dataGrid').seven20Navigator({navSelector:'#sidebar'});
-
-            if (contentName.length !== 0) {
-                // Show loading animation
-                //showLoadingAnimation($('#grid-inner-container .grid-items-list'));
-                $('#dataGrid').seven20Grid({
-                    contentType: contentName
-                });
-            }
-            else {
-                $('#dataGrid').seven20Grid({ contentType: contentName });
-            }
-        });
-    </script>
 
 
     <link href="./css/jquery.pnotify.default.css" rel="stylesheet" type="text/css" />
@@ -55,8 +20,7 @@
             padding-bottom: 40px;
         }
         #sidebar {
-            min-width: 12em;
-            max-width: 20em;
+            min-width: 20em;
         }
 
         .ui-pnotify-history-container {
@@ -108,7 +72,42 @@
     </footer>
 
 </div><!--/.fluid-container-->
+<script src="http://code.jquery.com/jquery.min.js"></script>
+<script src="./scripts/bootstrap.js"></script>
+<script src="./scripts/jquery.pnotify.min.js"></script>
+<script src="./scripts/jquery.seven20.js"></script>
+<script src="./scripts/jquery.seven20.editor.js"></script>
+<script src="./scripts/jquery.seven20.navigator.js"></script>
+<script src="./scripts/jquery.seven20.grid.js"></script>
+<script src="./scripts/bootstrap.helper.js"></script>
+<script src="./scripts/jquery.validate.min.js"></script>
 
+
+<script>
+    $().ready(function(){
+        bootstrapNav('#topnav', 'Seven20');
+        //getData('/m/sp_getContentTypeHeader', '', populateNav, false, '', $('li.nav-header:contains(data)'), "Manage/d");
+        //getData('/m/usp_sd_getViewHeader', '', populateNav, false, '', $('li.nav-header:contains(view)'), "Manage/v");
+        //getData('/m/sp_getStoredProcedureHeader', '', populateNav, false, '', $('li.nav-header:contains(method)'), "Manage/m");
+
+        //initNav($('#nav'), 'div.nav-category', 'h3');
+
+        var contentName = "/d/a";
+
+        $('#dataGrid').seven20Navigator({navSelector:'#sidebar'});
+
+        if (contentName.length !== 0) {
+            // Show loading animation
+            //showLoadingAnimation($('#grid-inner-container .grid-items-list'));
+            $('#dataGrid').seven20Grid({
+                contentType: contentName
+            });
+        }
+        else {
+            $('#dataGrid').seven20Grid({ contentType: contentName });
+        }
+    });
+</script>
 </body>
 </html>
 
