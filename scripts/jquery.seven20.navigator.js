@@ -48,7 +48,7 @@
                 $(o.navSelector).append(navHtml);
                 $(o.navSelector).addClass('tabbable well grid-height');
                 $t.find('.slide-right-button').bind('click', function () {
-                    $(this).parent().slideRight();
+                    $(this).parent().slideLeft();
                 });
             }
 

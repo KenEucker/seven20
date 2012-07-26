@@ -155,7 +155,11 @@
     margin-top: 37px;
 }
 
-
+.add-field
+{
+	display: inline;
+	margin-right: 15px;
+}
 
 .grid-items-list {
     outline: none;

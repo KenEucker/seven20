@@ -1,3 +1,30 @@
+function addNewField(target, type)
+{
+    var id = 0;
+
+    while($(target + ' #new-field' + id).length !== 0)
+    {
+        ++id;
+    }
+
+    id = 'new-field' + id;
+
+    if(type === 'text')
+    {
+    }
+
+    var inputHtmlAttributes = 'type="text" id="' + id + '-##kind##" placeholder="field ##kind##..." name="' + id + '-##kind##"';
+    var inputHtml = '<input class="input-large" ##attributes##>';
+	var html = '<div id="' + id + '" class="control-group"><div class="controls">##inputs##</div></div>';
+    var fieldNameHtml = inputHtml.replace("##attributes##",inputHtmlAttributes.replace(/##kind##/g,"name"));
+    var fieldValueHtml = inputHtml.replace("##attributes##",inputHtmlAttributes.replace(/##kind##/g,"value"));
+    $(html.replace("##inputs##",fieldNameHtml + fieldValueHtml)).insertBefore($(target).find('.form-actions'));
+}
+
+function fadeAndRemove(target){
+    $(target).fadeAndRemove();
+}
+
 (function ($) {
     $.fn.seven20Editor = function (options) {
         var defaultOptions =
@@ -8,19 +35,44 @@
             'target': '',
             'targetForm': '',
 			'formEntryHtml': '<div class="control-group"><label class="control-label" for="input-##inputname##">##displayname##</label><div class="controls"><input type="##type##" class="input-large" id="input-##inputname##" name="##inputname##" value="##value##"></div></div>',
-			'formHtml':'<hr><div id="editor-##id##" class="editor-box"><h4>Edit address entry with id:##id##</h4><form id="form-##id##" class="form-horizontal" method="post" ><div class="form-actions"><button type="submit" class="btn btn-success" data-original-title="Save"><i class="icon-ok"></i></button><button onclick="javascript:fadeAndRemove(\'#editor-##id##\'); return false;" class="btn btn-danger" data-original-title="Cancel"><i class="icon-remove"></i></button></div></form></div>'
+			'formHtml':'<div id="editor-##id##" class="editor-box"><hr><h4>##heading##</h4><form id="form-##id##" class="form-horizontal" method="post" ><div class="form-actions"><div class="btn-group add-field"><button class="btn dropdown-toggle" data-toggle="dropdown">Add Field<span class="caret"></span></button><ul class="dropdown-menu"><li><a href="javascript:addNewField(\'#form-##id##\')">Text</a></li><li><a href="#">True/False</a></li><li><a href="#">Number</a></li></ul></div><button type="submit" class="btn btn-success" data-original-title="Save"><i class="icon-ok"></i></button><button onclick="javascript:fadeAndRemove(\'#editor-##id##\'); return false;" class="btn btn-danger" data-original-title="Cancel"><i class="icon-remove"></i></button></div></form></div>'
         };
         var o = $.extend(defaultOptions, options);
 
         return this.each(function () {
             var elem = $(this);
 			
-            function init() {
+            function init() {		
+				// If the editor should create new content
+				if(o.contentId === '')
+				{
+					// Attempt to create a contentId that denotes a new document
+					for(i = 0; i < 10; i++)
+					{
+						// If there is not another editor with the same ID
+						if($('#editor-newcontent' + i).length === 0)
+						{
+							o.contentId = "newcontent" + i;
+							break;
+						}
+						// Else if there are 10 other editors creating new content
+						else if(i == 9)
+							// Do not create the editor
+							return;
+					}
+				}
+				
                 buildForm();
             }
 			
 			function buildForm() {
 				var myForm = o.formHtml;
+				if(o.contentId.indexOf("newcontent") != -1)
+				{
+					myForm = myForm.replace(/##heading##/g, "Create new " + o.contentName + " document");
+				}
+				else
+					myForm = myForm.replace(/##heading##/g, "Edit " + o.contentName + " document with id:" + o.contentId);
 				
 				myForm = myForm.replace(/##id##/g, o.contentId);
 				
@@ -36,22 +88,30 @@
                 });
 			}
 
-            function getSerializedFormWithIdValue(form, id) {
-                var serializedForm = $(form).serializeArray();
-                var serializedString = "";
-                for (var item in serializedForm) {
-                    if (serializedForm[item].name == 'id') {
-                        serializedForm[item].value = id;
+            function setNewFields(data) {
+
+                for(var i in data) {
+                    if(i.indexOf('new-field') !== -1 && i.substr(i.length-4,4) === 'name')
+                    {
+                        var valName = i.replace("name","value");
+                        var value = $(o.targetForm + ' #' + valName).val();
+                        var key = data[i];
+                        delete data[i];
+                        delete data[valName];
+                        data[key] = value;
                     }
-                    serializedString += "&" + serializedForm[item].name + "=" + serializedForm[item].value;
                 }
 
-                return serializedString.replace("&", "");
+                return data;
             }
 
             function validateForm(form) {
                 var data = $(form).serializeFormJSON();
-                setData(o. contentName + '/' + o.contentId, closeForm, data);
+                setNewFields(data);
+				if(o.contentId.indexOf("newcontent") != -1)
+					setData(o. contentName, closeForm, data);
+				else
+					setData(o. contentName + '/' + o.contentId, closeForm, data);
             }
 
             function closeForm(result)

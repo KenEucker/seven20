@@ -89,7 +89,7 @@
             function buildViewer() {
                 $(o.gridSelector).append(o.viewerTemplate);
                 $t.find('.slide-left-button').bind('click', function () {
-                    $(this).parent().slideLeft();
+                    $(this).parent().slideRight();
                 });
             }
 
@@ -98,11 +98,7 @@
             }
 
             function addCreatorItem() {
-                var newDivId = "new" + contentname + $('#editor').find('div.add-div').length;
-                $('#viewer').append('<div class="add-div"></div>');
-                $.get("/Create/d/" + contentname + "?embedded=true&target=" + newDivId, function (html) {
-                    $('#viewer .add-div:last').html(html);
-                });
+                addEditorItem();
             }
 
             function editItems(selectedItems) {

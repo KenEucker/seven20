@@ -39,12 +39,8 @@ function makeAjax(request, callback, type, data, host, port)
     });
 }
 
-function fadeAndRemove(target){
-    $(target).fadeAndRemove();
-}
-
 (function ($) {
-    $.fn.slideLeft = function (options)
+    $.fn.slideRight = function (options)
     {
         var target = this;
         var left = 0;
@@ -69,13 +65,15 @@ function fadeAndRemove(target){
             }, 200, function() {});
     };
 
-    $.fn.slideRight = function (options)
+    $.fn.slideLeft = function (options)
     {
         var target = this;
         var right = 0;
         var opac = 1;
         var currClass = 'icon-chevron-right';
         var newClass = 'icon-chevron-left';
+        var expandMiddle = "-=" + target.width();
+        var expandRight = "-=" + target.width() - 100;
 
         if (target.css('opacity') !== '0.25') {
             right= target.width();
@@ -83,6 +81,8 @@ function fadeAndRemove(target){
             var temp = currClass;
             currClass = newClass;
             newClass = temp;
+            expandMiddle = "+=" + target.width();
+            expandRight = "+=" + target.width() - 100;
         }
         $(target).find('i').removeClass(currClass).addClass(newClass);
 
@@ -92,6 +92,8 @@ function fadeAndRemove(target){
                 opacity: opac,
                 right: right
             }, 200, function() {});
+        //$(target).next().animate({left: -right, width: expandMiddle}, 200, function() {});
+        //$(target).next().next().animate({left: -right}, 200, function() {});
     };
 
     $.fn.fadeAndRemove = function (options)

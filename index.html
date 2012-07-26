@@ -86,11 +86,6 @@
 <script>
     $().ready(function(){
         bootstrapNav('#topnav', 'Seven20');
-        //getData('/m/sp_getContentTypeHeader', '', populateNav, false, '', $('li.nav-header:contains(data)'), "Manage/d");
-        //getData('/m/usp_sd_getViewHeader', '', populateNav, false, '', $('li.nav-header:contains(view)'), "Manage/v");
-        //getData('/m/sp_getStoredProcedureHeader', '', populateNav, false, '', $('li.nav-header:contains(method)'), "Manage/m");
-
-        //initNav($('#nav'), 'div.nav-category', 'h3');
 
         var contentName = "/d/a";
 
@@ -98,7 +93,6 @@
 
         if (contentName.length !== 0) {
             // Show loading animation
-            //showLoadingAnimation($('#grid-inner-container .grid-items-list'));
             $('#dataGrid').seven20Grid({
                 contentType: contentName
             });
